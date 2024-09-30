@@ -1,3 +1,6 @@
+from urlextract import URLExtract
+extract = URLExtract()
+
 def fetch_stats(selected_user,df):
 
     if selected_user != "Overall":
@@ -12,7 +15,11 @@ def fetch_stats(selected_user,df):
 
     num_media = df[df['messages'] == "<Media omitted>"].shape[0]
 
+    links = []
+    for message in df['messages']:
+        links.extend(extract.find_urls(message))
 
-    return num_messages, len(words), num_media 
+
+    return num_messages, len(words), num_media, len(links) 
 
    
