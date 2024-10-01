@@ -36,7 +36,7 @@ if uploaded_file is not None:
 
 
         if selected_user == "Overall":
-            st.title("Most Busy Users: ")
+            st.header("Most Busy Users: ")
             x,new_df = helper.most_busy_user(df)
             fig, ax = plt.subplots()
             
@@ -46,4 +46,11 @@ if uploaded_file is not None:
                 plt.xticks(rotation="vertical")
                 st.pyplot(fig)   
             with col2:
-                st.dataframe(new_df)         
+                st.dataframe(new_df)   
+
+
+        st.header("WordCloud: ")
+        df_wc = helper.create_wordCloud(selected_user,df) 
+        fig,ax = plt.subplots()
+        ax.imshow(df_wc)
+        st.pyplot(fig)             
