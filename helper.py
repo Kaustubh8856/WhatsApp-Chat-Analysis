@@ -1,5 +1,8 @@
 from urlextract import URLExtract
 from wordcloud import WordCloud
+import pandas as pd
+from collections import Counter
+
 extract = URLExtract()
 
 def fetch_stats(selected_user,df):
@@ -31,7 +34,26 @@ def most_busy_user(df):
 def create_wordCloud(selected_user,df):
     if selected_user != "Overall":
         df = df[df['users']==selected_user]
+    temp = df[df['users'] != 'Group notification']
+    temp = temp[temp['messages'] != '<Media omitted>']       
 
     wc = WordCloud(width=500,height=500,background_color='white',min_font_size=10)
-    df_wc = wc.generate(df['messages'].str.cat(sep=' '))
-    return df_wc    
+    df_wc = wc.generate(temp['messages'].str.cat(sep=' '))
+    return df_wc  
+
+def most_commonWords(selected_user,df):
+    if selected_user != "Overall":
+        df = df[df['users']==selected_user]
+    temp = df[df['users'] != 'Group notification']
+    temp = temp[temp['messages'] != '<Media omitted>']    
+
+    f = open("stop_hinglish.txt",'r')
+    stop_words = f.read()
+
+    words = []
+    for message in temp['messages']:
+        for word in message.lower().split():
+            if word not in stop_words:
+                words.append(word)
+    most_common_df = pd.DataFrame(Counter(words).most_common(20))            
+    return most_common_df
