@@ -78,4 +78,13 @@ def monthly_timeline(selected_user,df):
     for i in range(timeline.shape[0]):
         time.append(timeline['month'][i] + " - "+ str(timeline['year'][i]))
     timeline['time'] = time    
-    return timeline        
+    return timeline 
+
+def week_activity_map(selected_user,df):
+    if selected_user != "Overall":
+        df = df[df['users'] == selected_user]
+    return df['day_name'].value_counts()    
+def month_activity_map(selected_user,df):
+    if selected_user != "Overall":
+        df = df[df['users'] == selected_user]
+    return df['month'].value_counts()
