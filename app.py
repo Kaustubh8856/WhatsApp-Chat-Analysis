@@ -8,7 +8,7 @@ if uploaded_file is not None:
     bytes_data = uploaded_file.getvalue()
     data = bytes_data.decode("utf-8")
     df = preprocessor.preprocess(data)
-    st.dataframe(df)
+    # st.dataframe(df)
     
     user_list = df['users'].unique().tolist()
     user_list.remove('Group notification')
@@ -34,6 +34,12 @@ if uploaded_file is not None:
             st.header("Links: ")
             st.title(num_links)     
 
+        st.header("Monthly Timeline")
+        timeline = helper.monthly_timeline(selected_user,df)
+        fig,ax = plt.subplots()
+        ax.plot(timeline['time'],timeline['messages'],color='green' )
+        plt.xticks(rotation='vertical')
+        st.pyplot(fig)
 
         if selected_user == "Overall":
             st.header("Most Busy Users: ")

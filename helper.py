@@ -69,3 +69,13 @@ def emoji_helper(selected_user, df):
     
     emoji_df = pd.DataFrame(Counter(emojis).most_common(len(Counter(emojis))), columns=['emoji', 'count'])
     return emoji_df
+
+def monthly_timeline(selected_user,df):
+    if selected_user != "Overall":
+        df = df[df['users'] == selected_user]
+    timeline = df.groupby(['year','month_num','month']).count()['messages'].reset_index()
+    time = []
+    for i in range(timeline.shape[0]):
+        time.append(timeline['month'][i] + " - "+ str(timeline['year'][i]))
+    timeline['time'] = time    
+    return timeline        
